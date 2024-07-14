@@ -20,6 +20,11 @@ public class BlogDAOImpl implements BlogDAO {
     }
 
     @Override
+    public Blog getBlog(int id) {
+        return entityManager.find(Blog.class, id);
+    }
+
+    @Override
     @Transactional
     public Blog save(Blog blog) {
 //        entityManager.persist(blog);
@@ -27,8 +32,21 @@ public class BlogDAOImpl implements BlogDAO {
     }
 
     @Override
+    @Transactional
+    public Blog update(Blog blog) {
+        return entityManager.merge(blog);
+    }
+
+    @Override
     public List<Blog> getBlogs() {
         TypedQuery<Blog> query = entityManager.createQuery("FROM Blog", Blog.class);
         return query.getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void deleteBlog(int id) {
+        Blog blog = entityManager.find(Blog.class, id);
+        entityManager.remove(blog);
     }
 }
